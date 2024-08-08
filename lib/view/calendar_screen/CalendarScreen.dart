@@ -58,6 +58,52 @@ class _CalendarscreenState extends State<Calendarscreen>
               inactiveNavigatorColor: Colors.grey,
               monthColor: Colors.white,
             ),
+            SizedBox(height: 20,),
+
+            //Container
+            Center(
+              child: Container(
+                height: 100,
+                width: 300,
+                color: Colorconstants.blackShade1,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(50, 20, 10, 20),
+                  child: Row(
+                    children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:  MaterialStateProperty.all<Color>(Colors.deepPurpleAccent),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                              side: BorderSide(color: Colors.deepPurpleAccent.shade200)
+
+                            )
+                          )
+                        ),
+                          onPressed: (){},
+                          child: Text("Today", style: TextStyle(color: Colors.white),)
+                      ),
+                      Spacer(),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:  MaterialStateProperty.all<Color>(Colors.deepPurpleAccent),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.zero,
+                                      side: BorderSide(color: Colors.deepPurpleAccent.shade200)
+
+                                  )
+                              )
+                          ),
+                          onPressed: (){},
+                          child: Text("Completed", style: TextStyle(color: Colors.white),)
+                      ),
+                    ],
+                  ),
+                )
+              ),
+            )
           ],
         ),
       ),
