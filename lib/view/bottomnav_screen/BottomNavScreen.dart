@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:todoapp/utils/AppSessions.dart';
 import 'package:todoapp/utils/ImageConstants.dart';
 import 'package:todoapp/view/calendar_screen/CalendarScreen.dart';
@@ -31,6 +32,7 @@ class _BottomNavScreenState extends State<BottomNavScreen>
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
 
   var toDoBox = Hive.box(AppSessions.TODOBOX);
 
@@ -127,14 +129,34 @@ class _BottomNavScreenState extends State<BottomNavScreen>
                             borderRadius: BorderRadius.circular(10))),
                   ),
                   SizedBox(height: 20),
+                  TextFormField(
+                    readOnly: true, // to avoid textfield typing
+                    controller: dateController,
+                    decoration: InputDecoration(
+                        hintText: "Date",
+                        filled: true,
+                        fillColor: Colors.grey.shade300,
+                        suffixIcon: IconButton(onPressed: () async {
+                          var selectedDate = await showDatePicker(context: context,
+                              firstDate: DateTime(2024),
+                              lastDate: DateTime.now());
+                          if(selectedDate != null)
+                          {
+                            dateController.text = DateFormat("dd MMM yyyy").format(selectedDate);
+                          }
 
+                        },
+                            icon: Icon(Icons.calendar_month)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                  ),
                   Row(
                     children: [
-                      Icon(Icons.access_alarm, size: 20, color: Colors.white,),
-                      SizedBox(width: 30,),
-                      Icon(Icons.category_outlined, size: 20, color: Colors.white,),
-                      SizedBox(width: 30,),
-                      Icon(Icons.flag, size: 20, color: Colors.white,),
+                      // Icon(Icons.access_alarm, size: 20, color: Colors.white,),
+                      // SizedBox(width: 30,),
+                      // Icon(Icons.category_outlined, size: 20, color: Colors.white,),
+                      // SizedBox(width: 30,),
+                      // Icon(Icons.flag, size: 20, color: Colors.white,),
                       Spacer(),
                       Icon(Icons.send, size: 20,color: Colors.white,)
                     ],
