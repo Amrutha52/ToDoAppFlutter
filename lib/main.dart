@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/utils/AppSessions.dart';
+import 'package:todoapp/view/bottomnav_screen/BottomNavScreen.dart';
 import 'package:todoapp/view/home_screen/HomeScreen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future<void> main() async
+{
+  await Hive.initFlutter(); // Initialization
+  var box = await Hive.openBox(AppSessions.TODOBOX);
   runApp(const MyApp());
 }
 
@@ -14,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ToDo App',
-      home: HomeScreen(),
+      home: BottomNavScreen(),
     );
   }
 }
