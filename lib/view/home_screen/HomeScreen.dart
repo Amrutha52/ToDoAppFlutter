@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 
 import '../bottomnav_screen/BottomNavScreen.dart';
 
