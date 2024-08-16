@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide CarouselController;
+import 'package:hive/hive.dart';
+import 'package:todoapp/view/login_screen/LoginMainScreen.dart';
+
+import '../../utils/AppSessions.dart';
 
 class LoginScreen extends StatefulWidget 
 {
@@ -11,6 +15,8 @@ class LoginScreen extends StatefulWidget
 
 class _LoginScreenState extends State<LoginScreen> 
 {
+
+
   @override
   Widget build(BuildContext context) 
   {
@@ -40,23 +46,25 @@ class _LoginScreenState extends State<LoginScreen>
                         )
                     )
                 ),
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginMainScreen()));
+                },
                 child: Text("Login", style: TextStyle(color: Colors.white),)
             ),
-            ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.deepPurpleAccent),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                            side: BorderSide(color: Colors.deepPurpleAccent.shade200)
-
-                        )
-                    )
-                ),
-                onPressed: (){},
-                child: Text("CREATE ACCOUNT", style: TextStyle(color: Colors.white),)
-            ),
+            // ElevatedButton(
+            //     style: ButtonStyle(
+            //         backgroundColor: MaterialStateProperty.all<Color>(Colors.deepPurpleAccent),
+            //         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //             RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.zero,
+            //                 side: BorderSide(color: Colors.deepPurpleAccent.shade200)
+            //
+            //             )
+            //         )
+            //     ),
+            //     onPressed: (){},
+            //     child: Text("CREATE ACCOUNT", style: TextStyle(color: Colors.white),)
+            // ),
           ],
         ),
       ),
