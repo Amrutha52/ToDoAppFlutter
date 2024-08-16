@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ToDoDetailsScreen extends StatefulWidget
 {
-  const ToDoDetailsScreen({super.key});
+  const ToDoDetailsScreen({super.key, required todoDesc, required title, required date});
 
   @override
   State<ToDoDetailsScreen> createState() => _ToDoDetailsScreenState();

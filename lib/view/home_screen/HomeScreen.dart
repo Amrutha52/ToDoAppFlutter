@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide CarouselController;
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:todoapp/utils/AppSessions.dart';
+import 'package:todoapp/view/home_screen/widgets/ToDoCard.dart';
 import 'package:todoapp/view/todo_details_screen/ToDoDetailsScreen.dart';
 
 import '../bottomnav_screen/BottomNavScreen.dart';
@@ -92,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.blueGrey.shade700,
+          backgroundColor: Colors.black,
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.grey.shade300,
             onPressed: () {
@@ -107,34 +109,34 @@ class _HomeScreenState extends State<HomeScreen> {
           body: ListView.separated(
               padding: EdgeInsets.all(15),
               itemBuilder: (context, index) {
-                var currentNote = todoBox.get(todoKeys[index]);
+                var currentTodo = todoBox.get(todoKeys[index]);
                 return InkWell(
                   onTap: ()
                   {
                     //Sending Details to the NoteDetails Screen
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ToDoDetailsScreen(todoDesc: currentNote["desc"],
-                      title: currentNote["title"],
-                      date: currentNote["date"],
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ToDoDetailsScreen(todoDesc: currentTodo["desc"],
+                      title: currentTodo["title"],
+                      date: currentTodo["date"],
                       //noteColor: DummyDB.noteColors[currentNote["colorIndex"]],
                     )));
                   },
-                  child: NoteCard(
-                    noteColor: DummyDB.noteColors[currentNote["colorIndex"]], // DummyDB.notesList[index]["colorIndex"] store cheytha data edukan vendiyulla code, hive il ninne index eduthitte DummyDByile colorsil ninne edukane cheyane.
-                    date:currentNote["date"] ,
-                    desc: currentNote["desc"],
-                    title: currentNote["title"],
+                  child: ToDoCard(
+                    //noteColor: DummyDB.noteColors[currentNote["colorIndex"]], // DummyDB.notesList[index]["colorIndex"] store cheytha data edukan vendiyulla code, hive il ninne index eduthitte DummyDByile colorsil ninne edukane cheyane.
+                    date:currentTodo["date"] ,
+                    desc: currentTodo["desc"],
+                    title: currentTodo["title"],
                     // for deletion
                     onDelete: () {
-                      noteBox.delete(noteKeys[index]);
-                      noteKeys = noteBox.keys.toList(); // delete cheyumbol oru key povum athonde nammude kayillulla list update cheyanam.
+                      todoBox.delete(todoKeys[index]);
+                      todoKeys = todoBox.keys.toList(); // delete cheyumbol oru key povum athonde nammude kayillulla list update cheyanam.
                       setState(() {});
                     },
                     // for editing
                     onEdit: () {
-                      titleController.text = currentNote["title"]; // UI il kannikunna dataye controlleril kanikunnu
-                      dateController.text = currentNote["date"]; // Hiveil ninne edukunnu
-                      descController.text = currentNote["desc"];
-                      selectedColorIndex = currentNote["colorIndex"];
+                      titleController.text = currentTodo["title"]; // UI il kannikunna dataye controlleril kanikunnu
+                      dateController.text = currentTodo["date"]; // Hiveil ninne edukunnu
+                      descController.text = currentTodo["desc"];
+                      //selectedColorIndex = currentNote["colorIndex"];
                       // titleController = TextEditingController(
                       //     text: DummyDb.notesList[index]["title"]); // Another method
                       _customBottomSheet(context,
@@ -146,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
               separatorBuilder: (context, index) => SizedBox(
                 height: 10,
               ),
-              itemCount: noteKeys.length)
+              itemCount: todoKeys.length)
       ),
     );
   }
@@ -208,35 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
-                  SizedBox(height: 20),
-                  //build color section
-                  StatefulBuilder( // Bottom Sheetne state update aavan, statefulBuilder veche wrap cheyyunu.
-                    builder: (context, setColorState) => Row(
-                      children: List.generate(
-                        DummyDB.noteColors.length,
-                            (index) => Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              selectedColorIndex = index; // click cheyunna indexine pass cheythe kodakanu.
-                              setColorState(
-                                    () {},
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 5),
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  border: selectedColorIndex == index // Indexine anusariche border kanikanam
-                                      ? Border.all(width: 3)
-                                      : null, // Border null accept cheyum
-                                  color: DummyDB.noteColors[index],
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+
                   SizedBox(height: 20),
                   Row(
                     children: [
@@ -266,10 +240,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: InkWell(
                           onTap: () {
                             if (isEdit == true) {
-                              noteBox.put(noteKeys[itemIndex!],{
+                              todoBox.put(todoKeys[itemIndex!],{
                                 "title": titleController.text,
                                 "desc": descController.text,
-                                "colorIndex": selectedColorIndex,
+                               // "colorIndex": selectedColorIndex,
                                 "date": dateController.text,
                               });
                               // DummyDB.notesList[itemIndex!] = {  // item indexileke puthiya mapine add cheyanam, epo controllerileke ulla values aa particular indexileke add aavum.
@@ -281,14 +255,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             } else {
                               //Step 3
-                              noteBox.add({ // Edit allenkil new add aavum.
+                              todoBox.add({ // Edit allenkil new add aavum.
                                 "title": titleController.text,
                                 "desc": descController.text,
                                 "date": dateController.text,
-                                "colorIndex": selectedColorIndex
+                                //"colorIndex": selectedColorIndex
                               });
                             }
-                            noteKeys = noteBox.keys.toList();
+                            todoKeys = todoBox.keys.toList();
                             Navigator.pop(context); // Bottom sheet closing
                             setState(() {});
                           },
