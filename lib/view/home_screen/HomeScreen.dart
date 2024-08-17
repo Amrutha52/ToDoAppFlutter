@@ -6,61 +6,8 @@ import 'package:todoapp/utils/AppSessions.dart';
 import 'package:todoapp/view/home_screen/widgets/ToDoCard.dart';
 import 'package:todoapp/view/todo_details_screen/ToDoDetailsScreen.dart';
 
-import '../bottomnav_screen/BottomNavScreen.dart';
+import '../../utils/ColorConstants.dart';
 
-// class HomeScreen extends StatefulWidget
-// {
-//   const HomeScreen({super.key});
-//
-//   @override
-//   State<HomeScreen> createState() => _HomeScreenState();
-// }
-//
-// class _HomeScreenState extends State<HomeScreen>
-// {
-//   @override
-//   Widget build(BuildContext context)
-//   {
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       appBar: AppBar(
-//         backgroundColor: Colors.black,
-//         title: Text("Home", style: TextStyle(color: Colors.white,
-//         fontWeight: FontWeight.bold
-//         ),
-//         ),
-//         actions: [
-//           Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-//           child: Icon(Icons.account_circle_rounded, size: 40,),
-//           )
-//         ],
-//       ),
-//       body: Center(
-//         child: InkWell(
-//           onTap: (){
-//             Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavScreen()));
-//           },
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Text("What do you want to do today?",
-//                 style: TextStyle(color: Colors.white,
-//                     fontSize: 20
-//                 ),
-//               ),
-//               SizedBox(height: 10,),
-//               Text("Tap + to add your tasks",
-//                 style: TextStyle(color: Colors.white,
-//                     fontSize: 16
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class HomeScreen extends StatefulWidget
 {
@@ -70,15 +17,15 @@ class HomeScreen extends StatefulWidget
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+{
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  int selectedColorIndex = 0; //currently selected color index kittaan
 
   var todoBox = Hive.box(AppSessions.TODOBOX);
 
-  List todoKeys = [];
+  var todoKeys = AppSessions.todoKeys;
 
   @override
   void initState()
@@ -91,21 +38,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
           backgroundColor: Colors.black,
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.grey.shade300,
-            onPressed: () {
-              titleController.clear();  // oro thavaneyum aa oru bottom sheet varune munne data clear aavum. To clear controllers before opening the bottom sheet again..
-              descController.clear();
-              dateController.clear();
-             // selectedColorIndex = 0;
-              _customBottomSheet(context); //isEdit false aayitulla BottomSheetine call cheyum,
-            },
-            child: Icon(Icons.add),
-          ),
+          title: Text("HomeScreen", style: TextStyle(color: Colors.white),),
+        ),
+          backgroundColor: Colors.black,
+          // floatingActionButton: FloatingActionButton(
+          //   backgroundColor: Colors.grey.shade300,
+          //   onPressed: () {
+          //     titleController.clear();  // oro thavaneyum aa oru bottom sheet varune munne data clear aavum. To clear controllers before opening the bottom sheet again..
+          //     descController.clear();
+          //     dateController.clear();
+          //
+          //     _customBottomSheet(context);
+          //   },
+          //   child: Icon(Icons.add),
+          // ),
           body: ListView.separated(
               padding: EdgeInsets.all(15),
               itemBuilder: (context, index) {
@@ -113,15 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 return InkWell(
                   onTap: ()
                   {
-                    //Sending Details to the NoteDetails Screen
+                    //Sending Details to the ToDoDetails Screen
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ToDoDetailsScreen(todoDesc: currentTodo["desc"],
                       title: currentTodo["title"],
                       date: currentTodo["date"],
-                      //noteColor: DummyDB.noteColors[currentNote["colorIndex"]],
                     )));
                   },
                   child: ToDoCard(
-                    //noteColor: DummyDB.noteColors[currentNote["colorIndex"]], // DummyDB.notesList[index]["colorIndex"] store cheytha data edukan vendiyulla code, hive il ninne index eduthitte DummyDByile colorsil ninne edukane cheyane.
+
                     date:currentTodo["date"] ,
                     desc: currentTodo["desc"],
                     title: currentTodo["title"],
@@ -136,9 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       titleController.text = currentTodo["title"]; // UI il kannikunna dataye controlleril kanikunnu
                       dateController.text = currentTodo["date"]; // Hiveil ninne edukunnu
                       descController.text = currentTodo["desc"];
-                      //selectedColorIndex = currentNote["colorIndex"];
-                      // titleController = TextEditingController(
-                      //     text: DummyDb.notesList[index]["title"]); // Another method
+
                       _customBottomSheet(context,
                           isEdit: true, itemIndex: index); // Edit varumbol isEdit true aayitulla BottomSheetine call cheyum,
                     },
@@ -154,8 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<dynamic> _customBottomSheet(BuildContext context,
-      {bool isEdit = false, int? itemIndex}) { // IsBool edit false aaki koduthu, add cheyumbol false aane, data add cheythe kazhinja true aaki kodukum, itemIndex edit aanenkil venam illenkil venda
+      {bool isEdit = false, int? itemIndex}) {
     return showModalBottomSheet(
+        backgroundColor: Colorconstants.blackShade1,
         isScrollControlled: true,
         context: context,
         builder: (context) => Padding(
@@ -168,6 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Text("Add Task", style: TextStyle(color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
+                  ),),
+                  SizedBox(height: 20,),
                   TextFormField(
                     controller: titleController,
                     decoration: InputDecoration(
@@ -210,85 +165,44 @@ class _HomeScreenState extends State<HomeScreen> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
-
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
                   Row(
                     children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            if (isEdit == true) {
-                              todoBox.put(todoKeys[itemIndex!],{
-                                "title": titleController.text,
-                                "desc": descController.text,
-                               // "colorIndex": selectedColorIndex,
-                                "date": dateController.text,
-                              });
-                              // DummyDB.notesList[itemIndex!] = {  // item indexileke puthiya mapine add cheyanam, epo controllerileke ulla values aa particular indexileke add aavum.
-                              //   "title": titleController.text,
-                              //   "desc": descController.text,
-                              //   "colorIndex": selectedColorIndex,
-                              //   "date": dateController.text,
-                              // };
+                      // Icon(Icons.access_alarm, size: 20, color: Colors.white,),
+                      // SizedBox(width: 30,),
+                      // Icon(Icons.category_outlined, size: 20, color: Colors.white,),
+                      // SizedBox(width: 30,),
+                      // Icon(Icons.flag, size: 20, color: Colors.white,),
+                      Spacer(),
+                      // Update
+                      InkWell(
+                          onTap: ()
+                          {
+                            if (isEdit == true)
+                              {
+                                todoBox.put(todoKeys[itemIndex!],{
+                                  "title": titleController.text,
+                                  "desc": descController.text,
+                                  "date": dateController.text,
+                                });
 
-                            } else {
-                              //Step 3
-                              todoBox.add({ // Edit allenkil new add aavum.
-                                "title": titleController.text,
-                                "desc": descController.text,
-                                "date": dateController.text,
-                                //"colorIndex": selectedColorIndex
-                              });
-                            }
+                              }
+
                             todoKeys = todoBox.keys.toList();
                             Navigator.pop(context); // Bottom sheet closing
                             setState(() {});
                           },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              isEdit ? "Update" : "Save", // isEdit aanenkil Update varum.
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                          child: Icon(Icons.update, size: 20,color: Colors.white,
+                          )
+                      )
                     ],
                   )
                 ],
               ),
             ),
           ),
-        ));
+        )
+    );
   }
 }
 

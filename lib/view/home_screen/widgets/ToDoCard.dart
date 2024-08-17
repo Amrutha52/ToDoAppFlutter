@@ -43,7 +43,7 @@ class ToDoCard extends StatelessWidget
               Text(
                 title,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
               ),
@@ -51,11 +51,11 @@ class ToDoCard extends StatelessWidget
               // For Editing
               IconButton(
                   onPressed: onEdit,
-                  icon: Icon(Icons.edit, color: Colors.black)),
+                  icon: Icon(Icons.edit, color: Colors.white)),
               // For Deleting
               IconButton(
                   onPressed: onDelete,
-                  icon: Icon(Icons.delete, color: Colors.black)),
+                  icon: Icon(Icons.delete, color: Colors.white)),
             ],
           ),
           Text(
@@ -63,7 +63,7 @@ class ToDoCard extends StatelessWidget
             maxLines: 4,
             style: TextStyle(
                 overflow: TextOverflow.ellipsis,
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.normal),
           ),
@@ -73,7 +73,7 @@ class ToDoCard extends StatelessWidget
               Text(
                 date,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.normal),
               ),
@@ -82,7 +82,7 @@ class ToDoCard extends StatelessWidget
                   onPressed: () {
                     Share.share("$title \n$desc \n$date"); // Separate data onnum kittenda aavashyam illa athondane evide viliche..
                   },
-                  icon: Icon(Icons.share, color: Colors.black)),
+                  icon: Icon(Icons.share, color: Colors.deepPurpleAccent)),
             ],
           ),
         ],

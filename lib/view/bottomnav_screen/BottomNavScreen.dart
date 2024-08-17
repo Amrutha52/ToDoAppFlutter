@@ -35,6 +35,18 @@ class _BottomNavScreenState extends State<BottomNavScreen>
   TextEditingController dateController = TextEditingController();
 
   var toDoBox = Hive.box(AppSessions.TODOBOX);
+  var todoKeys = AppSessions.todoKeys;
+
+  @override
+  void initState()
+  {
+    // App open aavumbol thanne valuesne pick cheythe konde varum
+    todoKeys = toDoBox.keys.toList();
+    setState(() {});
+    super.initState();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +58,9 @@ class _BottomNavScreenState extends State<BottomNavScreen>
         shape: CircleBorder(),
         backgroundColor: Colors.deepPurpleAccent.shade100,
           onPressed: (){
+            titleController.clear();  // oro thavaneyum aa oru bottom sheet varune munne data clear aavum. To clear controllers before opening the bottom sheet again..
+            descController.clear();
+            dateController.clear();
             _customBottomSheet(context); // Bottom Sheet appears when clicking floating button
           },
       child: Icon(Icons.add, size: 30,),
@@ -150,6 +165,7 @@ class _BottomNavScreenState extends State<BottomNavScreen>
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
+                  SizedBox(height: 30,),
                   Row(
                     children: [
                       // Icon(Icons.access_alarm, size: 20, color: Colors.white,),
@@ -158,7 +174,23 @@ class _BottomNavScreenState extends State<BottomNavScreen>
                       // SizedBox(width: 30,),
                       // Icon(Icons.flag, size: 20, color: Colors.white,),
                       Spacer(),
-                      Icon(Icons.send, size: 20,color: Colors.white,)
+                      //Save
+                      InkWell(
+                        onTap: ()
+                        {
+                          toDoBox.add({ // Edit allenkil new add aavum.
+                            "title": titleController.text,
+                            "desc": descController.text,
+                            "date": dateController.text,
+
+                          });
+                          todoKeys = toDoBox.keys.toList();
+                          Navigator.pop(context); // Bottom sheet closing
+                          setState(() {});
+                        },
+                          child: Icon(Icons.send, size: 20,color: Colors.white,
+                          )
+                      )
                     ],
                   )
                 ],

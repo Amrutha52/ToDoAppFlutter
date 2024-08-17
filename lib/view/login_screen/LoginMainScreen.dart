@@ -144,7 +144,7 @@ class LoginMainScreen extends StatelessWidget
                       "useremail": emailController.text,
                       "userpassword": passwordController.text,
                     });
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavScreen()));
                     //  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
 
                     // }

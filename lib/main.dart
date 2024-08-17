@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/utils/AppSessions.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todoapp/view/bottomnav_screen/BottomNavScreen.dart';
 import 'package:todoapp/view/login_screen/LoginScreen.dart';
 
 Future<void> main() async
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ToDo App',
-      home: LoginScreen()//BottomNavScreen(),
+      home: BottomNavScreen() //LoginScreen()//,
     );
   }
 }
