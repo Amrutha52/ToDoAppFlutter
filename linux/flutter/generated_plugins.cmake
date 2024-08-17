@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  simple_horizontal_calendar
   url_launcher_linux
 )
 

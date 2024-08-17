@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   share_plus
+  simple_horizontal_calendar
   url_launcher_windows
 )
 

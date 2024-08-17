@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide CarouselController;
+import 'package:intl/intl.dart';
+import 'package:simple_horizontal_calendar/horizontal_calendar.dart';
 //import 'package:horizontal_week_calendar/horizontal_week_calendar.dart';
 import 'package:todoapp/utils/ColorConstants.dart';
 
@@ -13,7 +15,18 @@ class Calendarscreen extends StatefulWidget
 
 class _CalendarscreenState extends State<Calendarscreen>
 {
-  var selectedDate = DateTime.now();
+ // var selectedDate = DateTime.now();
+  String selectedDate = "";
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        selectedDate = DateFormat('dd MMMM, yyyy').format(DateTime.now());
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context)
@@ -30,6 +43,7 @@ class _CalendarscreenState extends State<Calendarscreen>
           ),
         ),
       ),
+
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -59,6 +73,16 @@ class _CalendarscreenState extends State<Calendarscreen>
             //   inactiveNavigatorColor: Colors.grey,
             //   monthColor: Colors.white,
             // ),
+            Container(
+              color: Colorconstants.blackShade1,
+              child: HorizontalCalender(
+                onSelected: (DateTime date) {
+                  setState(() {
+                    selectedDate = DateFormat('dd MMMM, yyyy').format(date);
+                  });
+                },
+              ),
+            ),
             SizedBox(height: 20,),
 
             //Container
